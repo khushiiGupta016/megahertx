@@ -1,0 +1,9 @@
+export const CURSOR = {
+  GO: "GO",
+  OPEN: "OPEN",
+  VIEW: "VIEW",
+  EXPLORE: "EXPLORE",
+  DISCOVER: "DISCOVER",
+  READ: "READ",
+  CONNECT: "CONNECT",
+};
