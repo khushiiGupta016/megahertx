@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "../ui/Reveal";
+import ResponsiveImage from "../ui/ResponsiveImage";
 import { EASE_OUT } from "../../constants/theme";
 
 export default function ServiceCard({
@@ -10,7 +11,6 @@ export default function ServiceCard({
   action = "display",
   onBook,
   variant = "film",
-  cursorLabel,
   delay = 0,
 }) {
   const isBooking = action === "booking";
@@ -18,11 +18,12 @@ export default function ServiceCard({
 
   const cardInner = (
     <>
-      <img
+      <ResponsiveImage
         src={image}
         alt={`${title} — ${description}`}
-        className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-        loading="lazy"
+        width={640}
+        height={320}
+        className="opacity-90 transition duration-700 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/15" />
 
@@ -54,7 +55,7 @@ export default function ServiceCard({
           type="button"
           onClick={onBook}
           aria-label={`Book a slot for ${title}`}
-          data-cursor={cursorLabel}
+          data-cursor-interactive
           whileHover={{ y: -6, scale: 1.012 }}
           transition={{ duration: 0.35, ease: EASE_OUT }}
           className={`${cardClass} relative cursor-pointer`}
@@ -64,7 +65,7 @@ export default function ServiceCard({
         </motion.button>
       ) : (
         <motion.div
-          data-cursor={cursorLabel}
+          data-cursor-interactive
           whileHover={{ y: -6, scale: 1.012 }}
           transition={{ duration: 0.35, ease: EASE_OUT }}
           className={`${cardClass} relative`}

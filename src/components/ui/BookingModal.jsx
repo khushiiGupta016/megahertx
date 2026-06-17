@@ -1,14 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import useScrollLock from "../../hooks/useScrollLock";
 import { EASE_OUT } from "../../constants/theme";
-import { voiceProjectTypes } from "../../data/voiceServices";
+import { BOOKING_TIME_SLOTS, voiceProjectTypes } from "../../data/voiceServices";
+
+const inputClass =
+  "w-full rounded-[6px] border border-white/20 bg-black/40 px-4 py-3 text-[15px] text-white outline-none transition focus:border-[#F34E32] focus:ring-1 focus:ring-[#F34E32]";
 
 export default function BookingModal({ isOpen, onClose, onConfirm }) {
   const reduceMotion = useReducedMotion();
   useScrollLock(isOpen);
+
+  const minDate = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -82,32 +87,17 @@ export default function BookingModal({ isOpen, onClose, onConfirm }) {
             <form onSubmit={handleSubmit} className="space-y-5">
               <label className="block">
                 <span className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-white/65">Name</span>
-                <input
-                  required
-                  name="name"
-                  type="text"
-                  className="w-full rounded-[6px] border border-white/20 bg-black/40 px-4 py-3 text-[15px] text-white outline-none transition focus:border-[#F34E32] focus:ring-1 focus:ring-[#F34E32]"
-                />
+                <input required name="name" type="text" className={inputClass} />
               </label>
 
               <label className="block">
                 <span className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-white/65">Email</span>
-                <input
-                  required
-                  name="email"
-                  type="email"
-                  className="w-full rounded-[6px] border border-white/20 bg-black/40 px-4 py-3 text-[15px] text-white outline-none transition focus:border-[#F34E32] focus:ring-1 focus:ring-[#F34E32]"
-                />
+                <input required name="email" type="email" className={inputClass} />
               </label>
 
               <label className="block">
                 <span className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-white/65">Project Type</span>
-                <select
-                  required
-                  name="projectType"
-                  className="w-full rounded-[6px] border border-white/20 bg-black/40 px-4 py-3 text-[15px] text-white outline-none transition focus:border-[#F34E32] focus:ring-1 focus:ring-[#F34E32]"
-                  defaultValue=""
-                >
+                <select required name="projectType" className={inputClass} defaultValue="">
                   <option value="" disabled>
                     Select project type
                   </option>
@@ -120,13 +110,22 @@ export default function BookingModal({ isOpen, onClose, onConfirm }) {
               </label>
 
               <label className="block">
-                <span className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-white/65">Preferred Date/Time</span>
-                <input
-                  required
-                  name="preferredDateTime"
-                  type="datetime-local"
-                  className="w-full rounded-[6px] border border-white/20 bg-black/40 px-4 py-3 text-[15px] text-white outline-none transition focus:border-[#F34E32] focus:ring-1 focus:ring-[#F34E32]"
-                />
+                <span className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-white/65">Preferred Date</span>
+                <input required name="bookingDate" type="date" min={minDate} className={inputClass} />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-[11px] font-black uppercase tracking-[0.16em] text-white/65">Time Slot</span>
+                <select required name="bookingTime" className={inputClass} defaultValue="">
+                  <option value="" disabled>
+                    Select a time slot
+                  </option>
+                  {BOOKING_TIME_SLOTS.map((slot) => (
+                    <option key={slot} value={slot} className="bg-[#120707]">
+                      {slot}
+                    </option>
+                  ))}
+                </select>
               </label>
 
               <button

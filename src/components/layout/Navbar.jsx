@@ -1,5 +1,5 @@
-import { CURSOR } from "../../constants/cursorLabels";
 import useActiveSection from "../../hooks/useActiveSection";
+import { CTA_VARIANT } from "../../constants/cursorLabels";
 import { NAV_ITEMS, SECTION_HASH, SECTIONS } from "../../constants/sections";
 import { scrollToSection } from "../../utils/scrollToSection";
 
@@ -17,7 +17,7 @@ export default function Navbar() {
         <a
           href={SECTION_HASH(SECTIONS.hero)}
           onClick={(event) => handleNavClick(event, SECTIONS.hero)}
-          data-cursor={CURSOR.GO}
+          data-cursor-cta={CTA_VARIANT.SECONDARY}
           className="shrink-0 text-[11px] font-black uppercase tracking-[0.18em] text-white transition hover:text-[#F34E32] sm:text-[12px]"
         >
           AMA FILMS
@@ -32,7 +32,7 @@ export default function Navbar() {
               key={item.id}
               href={SECTION_HASH(item.id)}
               onClick={(event) => handleNavClick(event, item.id)}
-              data-cursor={CURSOR.GO}
+              data-cursor-cta={CTA_VARIANT.SECONDARY}
               className={`shrink-0 transition hover:text-[#F34E32] ${activeId === item.id ? "text-[#F34E32]" : "text-white/82"}`}
             >
               {item.label}

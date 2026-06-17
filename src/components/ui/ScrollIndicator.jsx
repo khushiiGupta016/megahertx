@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { CTA_VARIANT } from "../../constants/cursorLabels";
 import { SECTION_HASH, SECTIONS } from "../../constants/sections";
 
 export default function ScrollIndicator({ href = SECTION_HASH(SECTIONS.about) }) {
@@ -15,6 +16,7 @@ export default function ScrollIndicator({ href = SECTION_HASH(SECTIONS.about) })
       <a
         href={href}
         aria-label="Scroll down to About"
+        data-cursor-cta={CTA_VARIANT.SECONDARY}
         className="flex flex-col items-center gap-2 text-white/70 transition-colors hover:text-white"
       >
         <span className="text-[10px] font-black uppercase tracking-[0.22em]">Scroll</span>

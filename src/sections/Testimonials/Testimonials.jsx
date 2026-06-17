@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import Reveal from "../../components/ui/Reveal";
 import ScribbleTitle from "../../components/ui/ScribbleTitle";
-import { CURSOR } from "../../constants/cursorLabels";
 import { SECTIONS } from "../../constants/sections";
 import { EASE_OUT, FONT_SERIF } from "../../constants/theme";
 import { getInitials, testimonials } from "../../data/testimonialsData";
@@ -18,13 +17,9 @@ function StarRating({ count = 5 }) {
   );
 }
 
-function TestimonialCard({ item, isCenter }) {
+function TestimonialCard({ item }) {
   return (
-    <article
-      className={`flex min-h-[148px] flex-col rounded-[8px] bg-[#160000] p-4 text-white sm:min-h-[158px] sm:p-5 lg:min-h-[168px] ${
-        isCenter ? "" : "overflow-hidden blur-[0.1px]"
-      }`}
-    >
+    <article className="flex min-h-[168px] flex-col rounded-[8px] bg-[#160000] p-5 text-white sm:min-h-[180px] sm:p-6 lg:min-h-[195px]">
       <StarRating count={item.rating} />
       <p
         className="mt-2 text-[12px] italic text-white/70 sm:text-[13px]"
@@ -32,11 +27,7 @@ function TestimonialCard({ item, isCenter }) {
       >
         {item.kicker}
       </p>
-      <p
-        className={`mt-2.5 font-black leading-[1.34] tracking-[-0.055em] ${
-          isCenter ? "text-[14px] sm:text-[16px] lg:text-[17px]" : "text-[15px] opacity-45"
-        }`}
-      >
+      <p className="mt-2.5 text-[14px] font-black leading-[1.34] tracking-[-0.055em] sm:text-[16px] lg:text-[17px]">
         {item.quote}
       </p>
       <div className="mt-4 flex items-center gap-2.5">
@@ -56,14 +47,24 @@ function TestimonialCard({ item, isCenter }) {
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
+  const directionRef = useRef(1);
   const current = testimonials[active];
-  const prev = testimonials[(active - 1 + testimonials.length) % testimonials.length];
-  const next = testimonials[(active + 1) % testimonials.length];
+
+  const goPrev = () => {
+    directionRef.current = -1;
+    setActive((value) => (value - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const goNext = () => {
+    directionRef.current = 1;
+    setActive((value) => (value + 1) % testimonials.length);
+  };
+
+  const slideOffset = directionRef.current > 0 ? 48 : -48;
 
   return (
     <section
       id={SECTIONS.testimonials}
-      data-cursor={CURSOR.READ}
       className="scroll-mt-[60px] overflow-hidden bg-[#070000] px-5 py-12 text-white sm:px-8 lg:px-10 lg:py-[4.5rem]"
     >
       <Reveal className="mx-auto max-w-[1250px] text-center">
@@ -85,49 +86,45 @@ export default function Testimonials() {
         </p>
       </Reveal>
 
-      <div className="relative mx-auto mt-8 max-w-[1250px] overflow-visible">
-        <div className="grid grid-cols-[64px_minmax(0,480px)_64px] justify-center gap-5 md:grid-cols-[80px_minmax(0,480px)_80px] md:gap-6">
-          {[prev, current, next].map((item, index) => {
-            const isCenter = index === 1;
-            return (
-              <motion.div
-                key={`${item.name}-${active}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: isCenter ? 1 : 0.28, y: 0 }}
-                transition={{ duration: 0.55, ease: EASE_OUT }}
-                className={index === 0 ? "md:col-start-1" : index === 1 ? "md:col-start-2" : "md:col-start-3"}
-              >
-                <TestimonialCard item={item} isCenter={isCenter} />
-              </motion.div>
-            );
-          })}
+      <div className="relative mx-auto mt-10 max-w-[640px] px-12 sm:px-14">
+        <button
+          type="button"
+          aria-label="Previous testimonial"
+          data-cursor-interactive
+          onClick={goPrev}
+          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 text-white transition hover:-translate-x-1 hover:text-[#F34E32]"
+        >
+          <ChevronLeft className="h-7 w-7 stroke-[1.25] sm:h-8 sm:w-8" />
+        </button>
+
+        <div className="overflow-hidden" aria-live="polite" aria-atomic="true">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, x: slideOffset }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -slideOffset }}
+              transition={{ duration: 0.55, ease: EASE_OUT }}
+              style={{ willChange: "transform, opacity" }}
+            >
+              <TestimonialCard item={current} />
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <div className="mt-5 flex items-center justify-between">
-          <div className="rounded-full border border-white/25 px-3 py-1 text-[13px] font-medium leading-none text-white/70">
-            {active + 1} / {testimonials.length}
-          </div>
-          <div className="flex items-center gap-4 text-white">
-            <button
-              type="button"
-              aria-label="Previous testimonial"
-              data-cursor={CURSOR.VIEW}
-              onClick={() => setActive((value) => (value - 1 + testimonials.length) % testimonials.length)}
-              className="transition hover:-translate-x-1 hover:text-[#F34E32]"
-            >
-              <ChevronLeft className="h-7 w-7 stroke-[1.25]" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next testimonial"
-              data-cursor={CURSOR.VIEW}
-              onClick={() => setActive((value) => (value + 1) % testimonials.length)}
-              className="transition hover:translate-x-1 hover:text-[#F34E32]"
-            >
-              <ChevronRight className="h-7 w-7 stroke-[1.25]" />
-            </button>
-          </div>
-        </div>
+        <button
+          type="button"
+          aria-label="Next testimonial"
+          data-cursor-interactive
+          onClick={goNext}
+          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 text-white transition hover:translate-x-1 hover:text-[#F34E32]"
+        >
+          <ChevronRight className="h-7 w-7 stroke-[1.25] sm:h-8 sm:w-8" />
+        </button>
+
+        <p className="sr-only">
+          Testimonial {active + 1} of {testimonials.length}
+        </p>
       </div>
     </section>
   );

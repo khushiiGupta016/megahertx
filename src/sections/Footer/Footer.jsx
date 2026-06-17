@@ -1,4 +1,4 @@
-import { CURSOR } from "../../constants/cursorLabels";
+import { CTA_VARIANT } from "../../constants/cursorLabels";
 import { NAV_ITEMS, SECTION_HASH, SECTIONS } from "../../constants/sections";
 import { scrollToSection } from "../../utils/scrollToSection";
 
@@ -14,7 +14,7 @@ export default function Footer() {
         <a
           href={SECTION_HASH(SECTIONS.hero)}
           onClick={(event) => handleNavClick(event, SECTIONS.hero)}
-          data-cursor={CURSOR.GO}
+          data-cursor-cta={CTA_VARIANT.SECONDARY}
           className="text-[11px] font-black uppercase tracking-[0.18em] text-white transition hover:text-[#F34E32] sm:text-[12px]"
         >
           AMA FILMS
@@ -29,7 +29,7 @@ export default function Footer() {
               key={item.id}
               href={SECTION_HASH(item.id)}
               onClick={(event) => handleNavClick(event, item.id)}
-              data-cursor={CURSOR.GO}
+              data-cursor-cta={CTA_VARIANT.SECONDARY}
               className="transition hover:text-[#F34E32]"
             >
               {item.label}

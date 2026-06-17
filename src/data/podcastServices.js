@@ -21,13 +21,13 @@ export const podcastOverview = {
     {
       title: "Publishing",
       description: "Metadata, artwork, and platform-ready delivery",
-      image: heroImages.production,
+      image: heroImages.podcastPublishing,
       action: "display",
     },
     {
       title: "Distribution",
       description: "Multi-platform rollout and audience reach",
-      image: heroImages.voiceStudio,
+      image: heroImages.podcastDistribution,
       action: "display",
     },
   ],

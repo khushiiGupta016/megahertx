@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CURSOR } from "../../constants/cursorLabels";
 import CategorySplitLayout from "../../components/service/CategorySplitLayout";
 import ServiceCard from "../../components/service/ServiceCard";
 import AudioWaveGraphic from "../../components/ui/AudioWaveGraphic";
@@ -29,7 +28,6 @@ export default function VoiceSection() {
             image={card.image}
             action={card.action}
             onBook={() => setIsBookingOpen(true)}
-            cursorLabel={CURSOR.VIEW}
             variant="voice"
             delay={index * 0.06}
           />

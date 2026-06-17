@@ -1,9 +1,5 @@
-export const CURSOR = {
-  GO: "GO",
-  OPEN: "OPEN",
-  VIEW: "VIEW",
-  EXPLORE: "EXPLORE",
-  DISCOVER: "DISCOVER",
-  READ: "READ",
-  CONNECT: "CONNECT",
+export const CTA_VARIANT = {
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+  LIGHT: "light",
 };

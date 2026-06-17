@@ -1,45 +1,94 @@
 import { useEffect, useRef, useState } from "react";
 
-const LERP = 0.14;
-const SCALE_LERP = 0.12;
+const LERP = 0.22;
+const SCALE_LERP = 0.2;
 const REST_SCALE = 1;
-const HOVER_SCALE = 3.8;
+const HOVER_SCALE = 2.7;
 
 function lerp(current, target, factor) {
   return current + (target - current) * factor;
 }
 
+function resolveCursorState(target) {
+  const labelEl = target.closest("[data-cursor-label]");
+  const aboutEl = target.closest("#about");
+
+  if (labelEl && aboutEl) {
+    return {
+      mode: "label",
+      label: labelEl.getAttribute("data-cursor-label") || "",
+      ctaVariant: "primary",
+      scale: HOVER_SCALE,
+    };
+  }
+
+  const ctaEl = target.closest("[data-cursor-cta]");
+  if (ctaEl) {
+    return {
+      mode: "cta",
+      label: "",
+      ctaVariant: ctaEl.getAttribute("data-cursor-cta") || "primary",
+      scale: HOVER_SCALE,
+    };
+  }
+
+  const interactiveEl = target.closest("[data-cursor-interactive]");
+  if (interactiveEl) {
+    return {
+      mode: "interactive",
+      label: "",
+      ctaVariant: "primary",
+      scale: HOVER_SCALE,
+    };
+  }
+
+  return {
+    mode: "rest",
+    label: "",
+    ctaVariant: "primary",
+    scale: REST_SCALE,
+  };
+}
+
+function interactionChanged(prev, next) {
+  return prev.mode !== next.mode || prev.label !== next.label || prev.ctaVariant !== next.ctaVariant;
+}
+
 export default function useCustomCursor(enabled) {
   const [label, setLabel] = useState("");
-  const [isHovering, setIsHovering] = useState(false);
+  const [mode, setMode] = useState("rest");
+  const [ctaVariant, setCtaVariant] = useState("primary");
   const positionRef = useRef({ x: 0, y: 0, scale: REST_SCALE });
   const targetRef = useRef({ x: 0, y: 0, scale: REST_SCALE });
+  const interactionRef = useRef({ mode: "rest", label: "", ctaVariant: "primary" });
   const cursorRef = useRef(null);
   const rafRef = useRef(null);
 
   useEffect(() => {
     if (!enabled) return undefined;
 
+    const commitInteraction = (state) => {
+      if (!interactionChanged(interactionRef.current, state)) return;
+      interactionRef.current = state;
+      setMode(state.mode);
+      setLabel(state.label);
+      setCtaVariant(state.ctaVariant);
+    };
+
     const handleMouseMove = (event) => {
       targetRef.current.x = event.clientX;
       targetRef.current.y = event.clientY;
-
-      const hit = event.target.closest("[data-cursor]");
-      if (hit) {
-        setLabel(hit.getAttribute("data-cursor") || "");
-        setIsHovering(true);
-        targetRef.current.scale = HOVER_SCALE;
-      } else {
-        setLabel("");
-        setIsHovering(false);
-        targetRef.current.scale = REST_SCALE;
-      }
+      commitInteraction(resolveCursorState(event.target));
     };
 
     const handleMouseLeave = () => {
-      setLabel("");
-      setIsHovering(false);
       targetRef.current.scale = REST_SCALE;
+      commitInteraction({
+        mode: "rest",
+        label: "",
+        ctaVariant: "primary",
+        scale: REST_SCALE,
+      });
     };
 
     const tick = () => {
@@ -51,13 +100,13 @@ export default function useCustomCursor(enabled) {
       pos.scale = lerp(pos.scale, target.scale, SCALE_LERP);
 
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) scale(${pos.scale})`;
+        cursorRef.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) scale(${pos.scale})`;
       }
 
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
     rafRef.current = requestAnimationFrame(tick);
 
@@ -68,5 +117,5 @@ export default function useCustomCursor(enabled) {
     };
   }, [enabled]);
 
-  return { cursorRef, label, isHovering };
+  return { cursorRef, label, mode, ctaVariant };
 }

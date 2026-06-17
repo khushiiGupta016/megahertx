@@ -1,6 +1,6 @@
-import { CURSOR } from "../../constants/cursorLabels";
 import { motion } from "framer-motion";
 import Reveal from "../../components/ui/Reveal";
+import ResponsiveImage from "../../components/ui/ResponsiveImage";
 import { EASE_OUT } from "../../constants/theme";
 
 export default function NavHubCard({ title, description, image, delay = 0, onNavigate, card }) {
@@ -8,7 +8,7 @@ export default function NavHubCard({ title, description, image, delay = 0, onNav
     <Reveal delay={delay} amount={0.16}>
       <motion.button
         type="button"
-        data-cursor={CURSOR.GO}
+        data-cursor-label={title.toUpperCase()}
         onClick={() => onNavigate(card.sectionId)}
         aria-label={`Go to ${title} — ${description}`}
         whileHover={{ y: -7, scale: 1.012 }}
@@ -16,11 +16,12 @@ export default function NavHubCard({ title, description, image, delay = 0, onNav
         className="group relative block w-full cursor-pointer overflow-hidden rounded-[7px] bg-[#120707] text-left shadow-[0_22px_60px_rgba(0,0,0,0.42)] transition-shadow duration-300 hover:shadow-[0_28px_70px_rgba(243,78,50,0.18)] hover:ring-2 hover:ring-[#F34E32]/60"
         style={{ height: "clamp(210px, 25vw, 320px)" }}
       >
-        <img
+        <ResponsiveImage
           src={image}
           alt={`${title} — ${description}`}
-          className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-          loading="lazy"
+          width={640}
+          height={320}
+          className="opacity-90 transition duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
 

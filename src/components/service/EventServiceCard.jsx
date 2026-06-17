@@ -1,7 +1,8 @@
-import { CURSOR } from "../../constants/cursorLabels";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building2, Mic2, Route, Users } from "lucide-react";
 import Reveal from "../ui/Reveal";
+import ResponsiveImage from "../ui/ResponsiveImage";
+import { CTA_VARIANT } from "../../constants/cursorLabels";
 import { SECTIONS } from "../../constants/sections";
 import { EASE_OUT } from "../../constants/theme";
 import { scrollToSection } from "../../utils/scrollToSection";
@@ -29,17 +30,18 @@ export default function EventServiceCard({
   return (
     <Reveal delay={delay} amount={0.16}>
       <motion.article
-        data-cursor={CURSOR.DISCOVER}
+        data-cursor-interactive
         whileHover={{ y: -6, scale: 1.012 }}
         transition={{ duration: 0.35, ease: EASE_OUT }}
         className="group relative overflow-hidden rounded-[8px] bg-[#120707] text-left shadow-[0_22px_60px_rgba(0,0,0,0.38)] transition-shadow duration-300 hover:shadow-[0_28px_70px_rgba(243,78,50,0.22)] hover:ring-2 hover:ring-[#F34E32]/60"
         style={{ height: "clamp(220px, 28vw, 320px)" }}
       >
-        <img
+        <ResponsiveImage
           src={image}
           alt={`${title} — ${description}`}
-          className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
-          loading="lazy"
+          width={640}
+          height={320}
+          className="opacity-90 transition duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 transition duration-300 group-hover:from-black/90" />
         <div className="absolute inset-0 bg-[#F34E32]/0 transition duration-300 group-hover:bg-[#F34E32]/10" />
@@ -59,6 +61,7 @@ export default function EventServiceCard({
             <button
               type="button"
               onClick={handleLearnMore}
+              data-cursor-cta={CTA_VARIANT.PRIMARY}
               className="inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-[6px] bg-[#F34E32] px-5 text-[13px] font-black uppercase tracking-[-0.03em] text-white shadow-[0_14px_40px_rgba(243,78,50,0.28)] transition hover:bg-[#d93e25]"
             >
               Learn More

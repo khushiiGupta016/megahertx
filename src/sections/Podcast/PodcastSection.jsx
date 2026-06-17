@@ -1,7 +1,7 @@
-import { CURSOR } from "../../constants/cursorLabels";
 import { motion } from "framer-motion";
 import ServiceCard from "../../components/service/ServiceCard";
 import Reveal from "../../components/ui/Reveal";
+import ResponsiveImage from "../../components/ui/ResponsiveImage";
 import ScribbleTitle from "../../components/ui/ScribbleTitle";
 import SectionScrollButton from "../../components/ui/SectionScrollButton";
 import { SECTIONS } from "../../constants/sections";
@@ -24,7 +24,6 @@ export default function PodcastSection() {
               description={card.description}
               image={card.image}
               action={card.action}
-              cursorLabel={CURSOR.EXPLORE}
               variant="voice"
               delay={index * 0.06}
             />
@@ -48,11 +47,12 @@ export default function PodcastSection() {
             </p>
 
             <div className="relative mt-10 overflow-hidden rounded-[10px] shadow-[0_28px_80px_rgba(0,0,0,0.55)] ring-1 ring-white/10">
-              <img
+              <ResponsiveImage
                 src={podcastOverview.banner}
-                alt="Cinematic podcast studio"
-                className="h-[clamp(220px,32vw,420px)] w-full object-cover"
-                loading="lazy"
+                alt="Creative Portfolio Asset"
+                width={1600}
+                height={420}
+                className="h-[clamp(220px,32vw,420px)]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(243,78,50,0.18),transparent_45%)]" />
@@ -60,8 +60,8 @@ export default function PodcastSection() {
 
             <div className="mt-10">
               <SectionScrollButton
-                label="Next Section"
-                targetSectionId={SECTIONS.events}
+                label="Our Users"
+                targetSectionId={SECTIONS.testimonials}
                 variant="primary"
               />
             </div>

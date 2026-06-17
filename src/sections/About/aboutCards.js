@@ -24,7 +24,7 @@ export const aboutCards = [
     title: "Podcast",
     description: "Podcast production & distribution",
     sectionId: SECTIONS.podcast,
-    image: heroImages.production,
+    image: heroImages.podcastPublishing,
   },
   {
     title: "Events",

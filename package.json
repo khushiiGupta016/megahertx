@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sync-assets": "node scripts/sync-assets.mjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",

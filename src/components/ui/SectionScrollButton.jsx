@@ -1,5 +1,5 @@
-import { CURSOR } from "../../constants/cursorLabels";
 import { ArrowUpRight } from "lucide-react";
+import { CTA_VARIANT } from "../../constants/cursorLabels";
 import { scrollToSection } from "../../utils/scrollToSection";
 
 const base =
@@ -12,6 +12,12 @@ const variants = {
     "border border-white/80 bg-black/20 text-white backdrop-blur-sm hover:bg-white hover:text-black hover:scale-[1.02] focus:ring-offset-[#070000]",
   cream:
     "bg-[#F34E32] text-white shadow-[0_14px_40px_rgba(243,78,50,0.28)] hover:bg-[#d93e25] hover:scale-[1.02] focus:ring-offset-[#F6F3D8]",
+};
+
+const ctaByVariant = {
+  primary: CTA_VARIANT.PRIMARY,
+  secondary: CTA_VARIANT.SECONDARY,
+  cream: CTA_VARIANT.LIGHT,
 };
 
 export default function SectionScrollButton({
@@ -28,7 +34,7 @@ export default function SectionScrollButton({
     <button
       type="button"
       onClick={handleClick}
-      data-cursor={CURSOR.VIEW}
+      data-cursor-cta={ctaByVariant[variant] || CTA_VARIANT.PRIMARY}
       className={`${base} ${variants[variant]} ${className}`}
     >
       <span>{label}</span>

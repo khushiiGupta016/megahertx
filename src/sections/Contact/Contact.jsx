@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import SectionHeading from "../../components/ui/SectionHeading";
 import Reveal from "../../components/ui/Reveal";
-import { CURSOR } from "../../constants/cursorLabels";
+import { CTA_VARIANT } from "../../constants/cursorLabels";
 import { CONTACT_SERVICES } from "../../constants/contactServices";
 import { SECTIONS } from "../../constants/sections";
 
@@ -45,7 +45,7 @@ export default function Contact() {
                   name="name"
                   required
                   autoComplete="name"
-                  data-cursor={CURSOR.CONNECT}
+                  data-cursor-cta={CTA_VARIANT.SECONDARY}
                   className={inputClass}
                   placeholder="Your full name"
                 />
@@ -57,6 +57,7 @@ export default function Contact() {
                   name="email"
                   required
                   autoComplete="email"
+                  data-cursor-cta={CTA_VARIANT.SECONDARY}
                   className={inputClass}
                   placeholder="you@company.com"
                 />
@@ -70,7 +71,7 @@ export default function Contact() {
                   name="service"
                   required
                   defaultValue=""
-                  data-cursor={CURSOR.CONNECT}
+                  data-cursor-cta={CTA_VARIANT.SECONDARY}
                   className={`${inputClass} appearance-none pr-10`}
                 >
                   <option value="" disabled>
@@ -95,7 +96,7 @@ export default function Contact() {
                 name="message"
                 required
                 rows={5}
-                data-cursor={CURSOR.CONNECT}
+                data-cursor-cta={CTA_VARIANT.SECONDARY}
                 className={`${inputClass} resize-y`}
                 placeholder="Tell us about your project, timeline, and goals..."
               />
@@ -103,7 +104,7 @@ export default function Contact() {
 
             <button
               type="submit"
-              data-cursor={CURSOR.CONNECT}
+              data-cursor-cta={CTA_VARIANT.PRIMARY}
               className="inline-flex min-h-[56px] w-full items-center justify-center rounded-[7px] bg-[#F34E32] px-8 text-[15px] font-black uppercase tracking-[-0.03em] text-white shadow-[0_20px_60px_rgba(243,78,50,0.35)] transition hover:scale-[1.02] hover:bg-[#d93e25] sm:w-full"
             >
               Send Message

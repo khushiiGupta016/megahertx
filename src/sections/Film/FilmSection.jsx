@@ -1,4 +1,3 @@
-import { CURSOR } from "../../constants/cursorLabels";
 import CategorySplitLayout from "../../components/service/CategorySplitLayout";
 import ServiceCard from "../../components/service/ServiceCard";
 import { SECTIONS } from "../../constants/sections";
@@ -19,7 +18,6 @@ export default function FilmSection() {
           description={card.description}
           image={card.image}
           action={card.action}
-          cursorLabel={CURSOR.OPEN}
           variant="film"
           delay={index * 0.06}
         />
